@@ -12,15 +12,27 @@ class MoviesController < ApplicationController
 
   def index
     my_params = params.permit(:column)
+    sort_col = ""
+    @title_sty = nil
+    @date_sty = nil
    
     
     if my_params
       sort_col = my_params[:column]
-    else 
-      sort_col = ""
     end
     
-  
+    if sort_col == 'title'
+      @title_sty = 'hilite'
+    end
+    
+    if sort_col == 'release_date'
+      @date_sty = 'hilite'
+    end
+    
+    puts "sort_col = #{sort_col}"
+    puts @title_sty
+    puts @date_sty
+   
     @movies = Movie.all.order(sort_col)
     
    
