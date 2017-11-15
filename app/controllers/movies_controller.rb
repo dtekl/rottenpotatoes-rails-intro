@@ -11,13 +11,16 @@ class MoviesController < ApplicationController
   end
 
   def index
-    my_params = params.permit(:column)
+    my_params = params.permit(:column, :ratings)
     sort_col = ""
     @title_sty = nil
     @date_sty = nil
+    @all_ratings = Movie.get_ratings
+    @checked = params[:ratings]
+    puts @checked
    
     
-    if my_params
+    if my_params[:column]
       sort_col = my_params[:column]
     end
     
@@ -29,12 +32,12 @@ class MoviesController < ApplicationController
       @date_sty = 'hilite'
     end
     
-    puts "sort_col = #{sort_col}"
-    puts @title_sty
-    puts @date_sty
-   
-    @movies = Movie.all.order(sort_col)
-    
+    if params[:ratings]
+      puts "Have some filters"
+      @movies = Movie.where(:rating => params[:ratings].keys)
+    else  
+      @movies = Movie.all.order(sort_col)
+    end
    
   end
 
